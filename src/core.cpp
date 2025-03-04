@@ -91,7 +91,7 @@ int main(){
 
     //Let's try sweeping this distance_weight and see if there's a noticeable minimum of the total distance
     double weight_increment=0.001;
-    size_t num_weight_increments=6000;
+    size_t num_weight_increments=100000;
     manual_reward_map.plot_NN_total_distance_swept_distance_weight(weight_increment,num_weight_increments);
 
 
