@@ -7,6 +7,10 @@ struct site_obj
 {
     std::pair<double,double> coordinates;
     double reward_val;
+
+    bool operator < (const site_obj input_site) const {
+        return (reward_val<input_site.reward_val);
+    }
 };
 
 
@@ -91,7 +95,14 @@ class ManualRewardMap
 
         void draw_map();
 
+        void draw_map_with_paths(const std::vector<site_obj>);
+
+        std::pair<std::vector<site_obj>,double>  generate_paths_descending_priority();
 
 
+        std::pair<std::vector<site_obj>,double> generate_paths_distance_weighted_NN(const double distance_weight);
+
+        void plot_NN_total_distance_swept_distance_weight(double weight_increment,size_t num_weight_increments);
+        
 };
 
