@@ -1,6 +1,6 @@
 # Drilling Site Pathing Project
-Objective: given map of reward function, identify promising sites and path between them.
-
+Objective: Given a map of a reward function, identify promising sites and path between them.
+For now, map is manually generated (promising sites manually added) to dev path generation methods.
 
 
 
