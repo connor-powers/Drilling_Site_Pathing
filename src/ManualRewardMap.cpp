@@ -261,13 +261,15 @@ void ManualRewardMap::plot_NN_total_distance_swept_distance_weight(double weight
         fprintf(gnuplot_pipe, "set view map\n");
         fprintf(gnuplot_pipe, "set title 'Total Distance' font 'Arial,16'\n");
         fprintf(gnuplot_pipe, "set xlabel 'Distance Weight' font 'Arial,16'\n");
+        fprintf(gnuplot_pipe, "set logscale x 10\n");
+
 
         fprintf(gnuplot_pipe, "plot '-' with lines notitle\n");
-
         for (size_t index=0;index<num_weight_increments;index++){
             double distance_weight=weight_increment*index;
             std::pair<std::vector<site_obj>,double> output_pair=generate_paths_distance_weighted_NN(distance_weight);
             double total_distance=output_pair.second;
+
             fprintf(gnuplot_pipe, "%f %f\n",distance_weight,total_distance);
         }
         fprintf(gnuplot_pipe, "e \n");

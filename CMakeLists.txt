@@ -11,8 +11,15 @@ FetchContent_Declare(
         GIT_TAG 3.4
 )
 
-FetchContent_MakeAvailable(Eigen)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/v1.15.2.zip
+)
+
+FetchContent_MakeAvailable(Eigen googletest)
 
 add_executable(run src/core.cpp src/utils.cpp src/ManualRewardMap.cpp)
+add_executable(unit_tests tests/unit_tests.cpp src/utils.cpp src/ManualRewardMap.cpp)
 
 target_link_libraries(run PRIVATE Eigen3::Eigen)
+target_link_libraries(unit_tests PRIVATE Eigen3::Eigen gtest_main)
