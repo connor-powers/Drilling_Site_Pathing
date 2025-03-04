@@ -1,0 +1,27 @@
+name: Build and run simple unit tests on pull request v2
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  run_unit_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build 
+
+    - name: Unit Test Batch 1
+      working-directory: ${{github.workspace}}/build
+
+      run: ./unit_tests
+
