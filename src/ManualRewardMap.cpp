@@ -7,18 +7,18 @@ void ManualRewardMap::generate_map(){
     map_.setZero(); //fill background with zeros
     //y then x because params are (rows, cols) and cols will give us width in x
 
-    if (min_x_>min_site_x_coord_){
-        min_x_=min_site_x_coord_;
+    if (min_site_x_coord_<=min_x_){
+        min_x_=min_site_x_coord_-0.1;
     }
-    if (min_y_<min_site_y_coord_){
-        min_y_=min_site_y_coord_;
+    if (min_site_y_coord_<=min_y_){
+        min_y_=min_site_y_coord_-0.1;
     }
 
-    if (max_x_<max_site_x_coord_){
-        max_x_=max_site_x_coord_;
+    if (max_site_x_coord_>=max_x_){
+        max_x_=max_site_x_coord_+0.1;
     }
-    if (max_y_<max_site_y_coord_){
-        max_y_=max_site_y_coord_;
+    if (max_site_y_coord_>=max_y_){
+        max_y_=max_site_y_coord_+0.1;
     }
 
     //now need to find the pixel (row_ind,col_ind) in the map that best approximates the (x,y) coordinates of a given site
@@ -27,7 +27,6 @@ void ManualRewardMap::generate_map(){
         std::pair<size_t,size_t> closest_map_index_pair=coords_to_map_indices(site_position);
         map_(closest_map_index_pair.first,closest_map_index_pair.second)=site.reward_val;
     }
-
     
 }
 
@@ -99,6 +98,7 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
 
 void ManualRewardMap::draw_map(){
 
+
     //first make the data file
     //want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
     size_t const row_count = static_cast<size_t>(map_.rows());
@@ -110,8 +110,9 @@ void ManualRewardMap::draw_map(){
     std::ofstream output_file("map_data.dat");
     if (output_file.is_open()){
         for (size_t row_index=0;row_index<row_count;row_index++){
-            for (size_t col_index=0;col_index<col_count;col_index++)
-                output_file << min_x_+row_index*discrete_movement_x <<" "<< min_y_+col_index*discrete_movement_y <<" "<< map_(row_index,col_index) << "\n";
+            for (size_t col_index=0;col_index<col_count;col_index++){
+                output_file << min_x_+(col_index*discrete_movement_x) <<" "<< min_y_+(row_index*discrete_movement_y) <<" "<< map_(row_index,col_index) << "\n";
+            }
         }
         
         output_file.close();
@@ -131,7 +132,7 @@ void ManualRewardMap::draw_map(){
         fprintf(gnuplot_pipe, "set cblabel 'Reward Function' font 'Arial,14'\n");
         fprintf(gnuplot_pipe, "set tics font 'Helvetica,14'\n");
         fprintf(gnuplot_pipe, "set palette defined (0 'white', %f 'forest-green')\n",max_reward_val_);
-        fprintf(gnuplot_pipe, "plot 'map_data.dat' using 2:1:3 with image\n");
+        fprintf(gnuplot_pipe, "plot 'map_data.dat' using 1:2:3 with image\n");
         fprintf(gnuplot_pipe, "exit \n");
         pclose(gnuplot_pipe);
 
@@ -154,8 +155,9 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
     std::ofstream output_file("map_data.dat");
     if (output_file.is_open()){
         for (size_t row_index=0;row_index<row_count;row_index++){
-            for (size_t col_index=0;col_index<col_count;col_index++)
-                output_file << min_x_+row_index*discrete_movement_x <<" "<< min_y_+col_index*discrete_movement_y <<" "<< map_(row_index,col_index) << "\n";
+            for (size_t col_index=0;col_index<col_count;col_index++){
+                output_file << min_x_+col_index*discrete_movement_x <<" "<< min_y_+row_index*discrete_movement_y <<" "<< map_(row_index,col_index) << "\n";
+            }
         }
         
         output_file.close();
@@ -193,7 +195,7 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
             }
         }
 
-        fprintf(gnuplot_pipe, "plot 'map_data.dat' using 2:1:3 with image\n");
+        fprintf(gnuplot_pipe, "plot 'map_data.dat' using 1:2:3 with image\n");
         fprintf(gnuplot_pipe, "exit \n");
         pclose(gnuplot_pipe);
 
