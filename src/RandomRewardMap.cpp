@@ -6,7 +6,7 @@
 
 void RandomRewardMap::identify_potential_sites(int input_desired_num_sites, double input_site_reward_val_threshold){
     //Populates the list_of_sites_ with the <input_desired_num_sites> sites with the highest reward vals above the input threshold
-    std::vector<site_obj> output_list_of_sites={};
+    std::vector<site> output_list_of_sites={};
 
     double min_observed_reward_val=reward_range_min_;
     double max_observed_reward_val=reward_range_max_;
@@ -28,7 +28,7 @@ void RandomRewardMap::identify_potential_sites(int input_desired_num_sites, doub
             if (reward_val>=input_site_reward_val_threshold){
                 double x_coord=min_x_+(col_ind*discrete_movement_x);
                 double y_coord=min_y_+(row_ind*discrete_movement_y);
-                site_obj new_site;
+                site new_site;
                 new_site.coordinates.first=x_coord;
                 new_site.coordinates.second=y_coord;
                 new_site.reward_val=map_(row_ind,col_ind);
@@ -44,7 +44,7 @@ void RandomRewardMap::identify_potential_sites(int input_desired_num_sites, doub
     //Sort the list in descending order of reward val
     std::sort(output_list_of_sites.begin(),output_list_of_sites.end());
     std::reverse(output_list_of_sites.begin(),output_list_of_sites.end());
-    std::vector<site_obj> trimmed_site_list(output_list_of_sites.begin(),output_list_of_sites.begin()+input_desired_num_sites);
+    std::vector<site> trimmed_site_list(output_list_of_sites.begin(),output_list_of_sites.begin()+input_desired_num_sites);
     list_of_sites_=trimmed_site_list;
     return;
     return;
@@ -53,7 +53,7 @@ void RandomRewardMap::identify_potential_sites(int input_desired_num_sites, doub
 
 void RandomRewardMap::identify_potential_sites(double input_site_reward_val_threshold){
     //If no input_num_sites is passed to the function, then populates list_of_sites_ with all sites with reward vals greater than or equal to threshold val
-    std::vector<site_obj> output_list_of_sites={};
+    std::vector<site> output_list_of_sites={};
 
     size_t const row_count = static_cast<size_t>(map_.rows());
     size_t const col_count = static_cast<size_t>(map_.cols());
@@ -65,7 +65,7 @@ void RandomRewardMap::identify_potential_sites(double input_site_reward_val_thre
             if (map_(row_ind,col_ind)>=input_site_reward_val_threshold){
                 double x_coord=min_x_+(col_ind*discrete_movement_x);
                 double y_coord=min_y_+(row_ind*discrete_movement_y);
-                site_obj new_site;
+                site new_site;
                 new_site.coordinates.first=x_coord;
                 new_site.coordinates.second=y_coord;
                 new_site.reward_val=map_(row_ind,col_ind);
@@ -130,11 +130,11 @@ void RandomRewardMap::draw_map(){
 
 
 
-std::pair<std::vector<site_obj>,double> RandomRewardMap::generate_paths_distance_weighted_NN(const double distance_weight){
+std::pair<std::vector<site>,double> RandomRewardMap::generate_paths_distance_weighted_NN(const double distance_weight){
     //Nearest-neighbor algorithm taking into account both distance and site reward vals in the spirit of, e.g., https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm
 
-    std::vector<site_obj> visited_sites={};
-    std::vector<site_obj> unvisited_sites=list_of_sites_;
+    std::vector<site> visited_sites={};
+    std::vector<site> unvisited_sites=list_of_sites_;
 
     std::pair<double,double> current_coords=starting_position_;
 
@@ -143,14 +143,14 @@ std::pair<std::vector<site_obj>,double> RandomRewardMap::generate_paths_distance
         size_t best_site_index={list_of_sites_.size()}; //should throw out of range error if this never gets changed
         //Find the site with the lowest total "cost" associated with visiting it from the current position, taking into account distance and reward function
         for (size_t site_ind=0;site_ind<unvisited_sites.size();site_ind++){
-            site_obj site=unvisited_sites.at(site_ind);
+            site site=unvisited_sites.at(site_ind);
             double calculated_cost=calc_cost_function_from_position_to_site(current_coords,site,distance_weight);
             if (calculated_cost<lowest_cost){
                 lowest_cost=calculated_cost;
                 best_site_index=site_ind;
             }
         }
-        site_obj visited_site=unvisited_sites.at(best_site_index);
+        site visited_site=unvisited_sites.at(best_site_index);
         current_coords=visited_site.coordinates;
         visited_sites.push_back(visited_site);
         unvisited_sites.erase(unvisited_sites.begin()+best_site_index);
@@ -158,7 +158,7 @@ std::pair<std::vector<site_obj>,double> RandomRewardMap::generate_paths_distance
 
 
     double total_distance=calculate_total_distance_from_sequence(starting_position_,visited_sites);
-    std::pair<std::vector<site_obj>,double> output_pair;
+    std::pair<std::vector<site>,double> output_pair;
     output_pair.first=visited_sites;
     output_pair.second=total_distance;
     return output_pair;
@@ -166,7 +166,7 @@ std::pair<std::vector<site_obj>,double> RandomRewardMap::generate_paths_distance
 
 
 
-void RandomRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list,std::string input_path_type,double associated_distance_weight){
+void RandomRewardMap::draw_map_with_paths(const std::vector<site> input_sorted_site_list,std::string input_path_type,double associated_distance_weight){
 
     //First make the data file
     //Want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
@@ -253,7 +253,7 @@ void RandomRewardMap::plot_NN_total_distance_swept_distance_weight(double weight
         fprintf(gnuplot_pipe, "plot '-' with lines notitle\n");
         for (size_t index=0;index<num_weight_increments;index++){
             double distance_weight=weight_increment*index;
-            std::pair<std::vector<site_obj>,double> output_pair=generate_paths_distance_weighted_NN(distance_weight);
+            std::pair<std::vector<site>,double> output_pair=generate_paths_distance_weighted_NN(distance_weight);
             double total_distance=output_pair.second;
 
             fprintf(gnuplot_pipe, "%f %f\n",distance_weight,total_distance);

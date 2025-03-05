@@ -10,7 +10,7 @@ int main(){
     //Demonstrations of workflows with manually-entered site parameters:
 
     //Explicitly creating site objects:
-    std::vector<site_obj> site_list={};
+    std::vector<site> site_list={};
     
     std::pair<double,double> site_1_coords={0.8,0.8}; //(x,y)
     std::pair<double,double> site_2_coords={0.1,0.9};
@@ -18,12 +18,12 @@ int main(){
     double site_1_reward_val=0.8;
     double site_2_reward_val=0.2;
 
-    site_obj manual_site_1;
+    site manual_site_1;
     manual_site_1.coordinates=site_1_coords;
     manual_site_1.reward_val=site_1_reward_val;
     site_list.push_back(manual_site_1);
 
-    site_obj manual_site_2;
+    site manual_site_2;
     manual_site_2.coordinates=site_2_coords;
     manual_site_2.reward_val=site_2_reward_val;
     site_list.push_back(manual_site_2);
@@ -66,11 +66,11 @@ int main(){
     double site_5_reward_val=site_reward_val_distribution(engine);
     double site_6_reward_val=site_reward_val_distribution(engine);
 
-    site_obj manual_site_5;
+    site manual_site_5;
     manual_site_5.coordinates=site_5_coords;
     manual_site_5.reward_val=site_5_reward_val;
 
-    site_obj manual_site_6;
+    site manual_site_6;
     manual_site_6.coordinates=site_6_coords;
     manual_site_6.reward_val=site_6_reward_val;
 
@@ -99,8 +99,8 @@ int main(){
     // manual_reward_map.draw_map(); //uncomment to draw map without paths
 
 
-    std::pair<std::vector<site_obj>,double>  paths_and_distance_descending_priority=manual_reward_map.generate_paths_descending_priority();
-    std::vector<site_obj> paths_descending_priority=paths_and_distance_descending_priority.first;
+    std::pair<std::vector<site>,double>  paths_and_distance_descending_priority=manual_reward_map.generate_paths_descending_priority();
+    std::vector<site> paths_descending_priority=paths_and_distance_descending_priority.first;
     double distance_descending_priority=paths_and_distance_descending_priority.second;
     manual_reward_map.draw_map_with_paths(paths_descending_priority,"DescendingPriority");
     std::cout << "Total distance of descending priority method: " << distance_descending_priority << "\n";
@@ -108,16 +108,16 @@ int main(){
 
 
     double distance_weight_med=1;
-    std::pair<std::vector<site_obj>,double>  paths_and_distance_NN_midweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_med);
-    std::vector<site_obj> paths_NN_midweight=paths_and_distance_NN_midweight.first;
+    std::pair<std::vector<site>,double>  paths_and_distance_NN_midweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_med);
+    std::vector<site> paths_NN_midweight=paths_and_distance_NN_midweight.first;
     double distance_NN_midweight=paths_and_distance_NN_midweight.second;
     manual_reward_map.draw_map_with_paths(paths_NN_midweight,"Weighted_NN",distance_weight_med);
     std::cout << "Total distance of NN method with distance weight = " << distance_weight_med << ": " << distance_NN_midweight << "\n";
 
 
     double distance_weight_high=100;
-    std::pair<std::vector<site_obj>,double>  paths_and_distance_NN_highweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_high);
-    std::vector<site_obj> paths_NN_highweight=paths_and_distance_NN_highweight.first;
+    std::pair<std::vector<site>,double>  paths_and_distance_NN_highweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_high);
+    std::vector<site> paths_NN_highweight=paths_and_distance_NN_highweight.first;
     double distance_NN_highweight=paths_and_distance_NN_highweight.second;
     manual_reward_map.draw_map_with_paths(paths_NN_highweight,"Weighted_NN",distance_weight_high);
     std::cout << "Total distance of NN method with distance weight = " << distance_weight_high << ": " << distance_NN_highweight << "\n";
