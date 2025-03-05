@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <iostream>
+#include <vector>
 
 struct site_obj
 {
