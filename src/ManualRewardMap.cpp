@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
+#include "ManualRewardMap.h"
 #include "utils.h"
 
 void ManualRewardMap::generate_map(){
     map_.resize(map_side_length_y_,map_side_length_x_);
-    map_.setZero(); //fill background with zeros
+    map_.setZero(); //Fill background with zeros
     //y then x because params are (rows, cols) and cols will give us width in x
 
     if (min_site_x_coord_<=min_x_){
@@ -21,7 +22,7 @@ void ManualRewardMap::generate_map(){
         max_y_=max_site_y_coord_+0.1;
     }
 
-    //now need to find the pixel (row_ind,col_ind) in the map that best approximates the (x,y) coordinates of a given site
+    //Now need to find the pixel (row_ind,col_ind) in the map that best approximates the (x,y) coordinates of a given site
     for (site_obj site : list_of_sites_){
         std::pair<double,double> site_position=site.coordinates;
         std::pair<size_t,size_t> closest_map_index_pair=coords_to_map_indices(site_position);
@@ -48,7 +49,7 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
         closest_col_index= map_side_length_y_-1;
     }
     
-    //first let's find the position in the map matrix (which column) corresponding to the closest approximation of the input x coordinate
+    //First let's find the position in the map matrix (which column) corresponding to the closest approximation of the input x coordinate
     for (size_t column_index=0;column_index<map_side_length_x_-1;column_index++){
         double current_map_x_val=min_x_+(discrete_movement_x*column_index);
         double next_map_x_val=min_x_+(discrete_movement_x*(column_index+1));
@@ -59,7 +60,7 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
         }
         else if ((current_map_x_val<input_x)&&(next_map_x_val>input_x)){
             if (input_x-current_map_x_val < next_map_x_val-input_x){
-                //closer to current column index
+                //Closer to current column index
                 closest_col_index=column_index;
                 break;
             }
@@ -70,7 +71,7 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
         }
     }
 
-    //now let's find the position in the map matrix (which row) corresponding to the closest approximation of the input y coordinate
+    //Now let's find the position in the map matrix (which row) corresponding to the closest approximation of the input y coordinate
     for (size_t row_index=0;row_index<map_side_length_y_-1;row_index++){
         double current_map_y_val=min_y_+(discrete_movement_y*row_index);
         double next_map_y_val=min_y_+(discrete_movement_y*(row_index+1));
@@ -81,7 +82,7 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
         }
         else if ((current_map_y_val<input_y)&&(next_map_y_val>input_y)){
             if (input_y-current_map_y_val < next_map_y_val-input_y){
-                //closer to current row index
+                //Closer to current row index
                 closest_row_index=row_index;
                 break;
             }
@@ -99,8 +100,8 @@ std::pair<size_t,size_t> ManualRewardMap::coords_to_map_indices(std::pair<double
 void ManualRewardMap::draw_map(){
 
 
-    //first make the data file
-    //want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
+    //First make the data file
+    //Want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
     size_t const row_count = static_cast<size_t>(map_.rows());
     size_t const col_count = static_cast<size_t>(map_.cols());
     double discrete_movement_x=(max_x_-min_x_)/(map_side_length_x_-1);
@@ -120,11 +121,11 @@ void ManualRewardMap::draw_map(){
     if (output_file.is_open()){
         std::cout << "File is unexpectedly still open\n";
     }
-    //using Gnuplot
+    //Using Gnuplot
     FILE *gnuplot_pipe = popen("gnuplot -persist", "w");
 
     if (gnuplot_pipe){
-        //formatting
+        //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
         fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Arial,16'\n");
         fprintf(gnuplot_pipe, "set xrange [%f:%f]\n",min_x_,max_x_);
@@ -144,8 +145,8 @@ void ManualRewardMap::draw_map(){
 
 void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list){
 
-    //first make the data file
-    //want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
+    //First make the data file
+    //Want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
     size_t const row_count = static_cast<size_t>(map_.rows());
     size_t const col_count = static_cast<size_t>(map_.cols());
     double discrete_movement_x=(max_x_-min_x_)/(map_side_length_x_-1);
@@ -165,11 +166,11 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
     if (output_file.is_open()){
         std::cout << "File is unexpectedly still open\n";
     }
-    //using Gnuplot
+    //Using Gnuplot
     FILE *gnuplot_pipe = popen("gnuplot -persist", "w");
 
     if (gnuplot_pipe){
-        //formatting
+        //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
         fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Arial,16'\n");
         fprintf(gnuplot_pipe, "set xrange [%f:%f]\n",min_x_,max_x_);
@@ -180,7 +181,7 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
         fprintf(gnuplot_pipe, "set palette defined (0 'white', %f 'forest-green')\n",max_reward_val_);
 
 
-        //the input_sorted_site_list should list the sites in the order to visit them
+        //The input_sorted_site_list should list the sites in the order to visit them
 
         if (input_sorted_site_list.size()>1){
             double next_site_x_coord=input_sorted_site_list.at(0).coordinates.first;
@@ -228,7 +229,7 @@ std::pair<std::vector<site_obj>,double> ManualRewardMap::generate_paths_distance
     while (unvisited_sites.size()>0){
         double lowest_cost=INFINITY;
         size_t best_site_index={list_of_sites_.size()}; //should throw out of range error if this never gets changed
-        //find the site with the lowest total "cost" associated with visiting it from the current position, taking into account distance and reward function
+        //Find the site with the lowest total "cost" associated with visiting it from the current position, taking into account distance and reward function
         for (size_t site_ind=0;site_ind<unvisited_sites.size();site_ind++){
             site_obj site=unvisited_sites.at(site_ind);
             double calculated_cost=calc_cost_function_from_position_to_site(current_coords,site,distance_weight);
@@ -255,11 +256,11 @@ std::pair<std::vector<site_obj>,double> ManualRewardMap::generate_paths_distance
 
 void ManualRewardMap::plot_NN_total_distance_swept_distance_weight(double weight_increment,size_t num_weight_increments){
 
-    //using Gnuplot
+    //Using Gnuplot
     FILE *gnuplot_pipe = popen("gnuplot -persist", "w");
 
     if (gnuplot_pipe){
-        //formatting
+        //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
         fprintf(gnuplot_pipe, "set title 'Total Distance' font 'Arial,16'\n");
         fprintf(gnuplot_pipe, "set xlabel 'Distance Weight' font 'Arial,16'\n");

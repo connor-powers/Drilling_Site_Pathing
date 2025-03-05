@@ -1,18 +1,8 @@
 #include <iostream>
 #include <Eigen/Dense>
+#include "utils.h"
 
 using Eigen::MatrixXd;
-
-struct site_obj
-{
-    std::pair<double,double> coordinates;
-    double reward_val;
-
-    bool operator < (const site_obj input_site) const {
-        return (reward_val<input_site.reward_val);
-    }
-};
-
 
 class ManualRewardMap
 {

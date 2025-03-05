@@ -31,6 +31,7 @@ double calculate_total_distance_from_sequence(std::pair<double,double> input_sta
     for (size_t site_ind=1;site_ind<input_site_sequence.size();site_ind++){
         calculated_distance=distance(current_position,input_site_sequence.at(site_ind).coordinates);
         total_distance+=calculated_distance;
+        current_position=input_site_sequence.at(site_ind).coordinates;
     }
 
     return total_distance;
