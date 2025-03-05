@@ -18,8 +18,12 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Eigen googletest)
 
-add_executable(run src/core.cpp src/utils.cpp src/ManualRewardMap.cpp)
+add_executable(run_manual_map_demo src/manual_map_demo.cpp src/utils.cpp src/ManualRewardMap.cpp)
+add_executable(run_random_map_demo src/random_map_demo.cpp src/utils.cpp src/RandomRewardMap.cpp)
+
 add_executable(unit_tests tests/unit_tests.cpp src/utils.cpp src/ManualRewardMap.cpp)
 
-target_link_libraries(run PRIVATE Eigen3::Eigen)
+target_link_libraries(run_manual_map_demo PRIVATE Eigen3::Eigen)
+target_link_libraries(run_random_map_demo PRIVATE Eigen3::Eigen)
+
 target_link_libraries(unit_tests PRIVATE Eigen3::Eigen gtest_main)
