@@ -2,7 +2,6 @@
 Objective: given a reward map (2D map of a reward value indicating promise at a given location), identify promising sites and path between them.
 
 Currently, two modes of map generation are supported:
-
   1. Random map generation
      -Parametrized random generation of a reward map over an (x,y) domain with a given reward value range
   2. Manual map generation
