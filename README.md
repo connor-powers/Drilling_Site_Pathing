@@ -17,6 +17,19 @@ Once a map is generated, you can generate a path (a sequence of sites to visit s
     -For the randomly-generated maps, the user can choose to specify a number of sites to identify (e.g., if you're only interested in the top 5 sites) and a threshold reward value at (or above) which locations can be designated as sites of interest.
 
 
+
+# Build Instructions
+  1. Create an empty "build" directory and navigate to it
+  2. Run "cmake .."
+  3. Run "cmake --build ."
+
+# Usage Instructions
+After building, there should be executables called "run_manual_map_demo" and "run_random_map_demo" in the "build" directory.
+To run the random map workflow demonstration with default parameters, starting from the "build" directory, run "./run_random_map_demo".
+To run the manual map workflow demonstration with default parameters, starting from the "build" directory, run "./run_manual_map_demo".
+
+If you'd ike to adjust any of the parameters in the demo files, navigate to the "random_map_demo.cpp" or "manual_map_demo.cpp" files in the "src" directory and make any desired changes. Then, from the "build" directory, run "cmake --build ." to rebuild the executables.
+
 # Misc
 
 This software uses Gnuplot for visualization. The copyright and permission notice of Gnuplot is shown below:
