@@ -34,61 +34,9 @@ class ManualRewardMap
 
         }
     
-        void add_site(site_obj input_site){
-            double site_x=input_site.coordinates.first;
-            double site_y=input_site.coordinates.second;
-            if (site_x<min_site_x_coord_){
-                min_site_x_coord_=site_x;
-            }
+        void add_site(site_obj input_site);
 
-            if (site_x>max_site_x_coord_){
-                max_site_x_coord_=site_x;
-            }
-
-            if (site_y<min_site_y_coord_){
-                min_site_y_coord_=site_y;
-            }
-
-            if (site_y>max_site_y_coord_){
-                max_site_y_coord_=site_y;
-            }
-            if (input_site.reward_val>max_reward_val_){
-                max_reward_val_=input_site.reward_val;
-            }
-
-            list_of_sites_.push_back(input_site);
-        }
-
-        void add_site(double x_coord, double y_coord, double reward_val){
-            //overloading to allow direct addition of a site through its coordinates and reward val
-
-            if (x_coord<min_site_x_coord_){
-                min_site_x_coord_=x_coord;
-            }
-
-            if (x_coord>max_site_x_coord_){
-                max_site_x_coord_=x_coord;
-            }
-
-            if (y_coord<min_site_y_coord_){
-                min_site_y_coord_=y_coord;
-            }
-
-            if (y_coord>max_site_y_coord_){
-                max_site_y_coord_=y_coord;
-            }
-            if (reward_val>max_reward_val_){
-                max_reward_val_=reward_val;
-            }
-            site_obj tmp_site;
-            std::pair<double,double> tmp_coord_pair;
-            tmp_coord_pair.first=x_coord;
-            tmp_coord_pair.second=y_coord;
-
-            tmp_site.coordinates = tmp_coord_pair;
-            tmp_site.reward_val=reward_val;
-            list_of_sites_.push_back(tmp_site);
-        }
+        void add_site(double x_coord, double y_coord, double reward_val); //overloading to allow direct addition of a site through its coordinates and reward val
 
         void set_initial_position(std::pair<double,double> input_position){
             starting_position_=input_position;
@@ -106,7 +54,9 @@ class ManualRewardMap
 
         void draw_map();
 
-        void draw_map_with_paths(const std::vector<site_obj>);
+        void draw_map_with_paths(const std::vector<site_obj>, std::string input_path_type="", double associated_distance_weight=0);
+        //Current options for input_path_type: "DescendingPriority" if the path being plotted was generated with the descending priority method, or 
+        //"Weighted_NN" if the path being plotted was generated with the distance-weighted nearest-neighbor method. If this is the case, pass the associated distance weight as the third argument.
 
         std::pair<std::vector<site_obj>,double>  generate_paths_descending_priority();
 
