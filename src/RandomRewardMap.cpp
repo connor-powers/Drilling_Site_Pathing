@@ -111,7 +111,7 @@ void RandomRewardMap::draw_map(){
     FILE *gnuplot_pipe = popen("gnuplot -persist", "w");
 
     if (gnuplot_pipe){
-        //formatting
+        //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
         fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Times,16'\n");
         fprintf(gnuplot_pipe, "set xrange [%f:%f]\n",min_x_,max_x_);
@@ -166,7 +166,7 @@ std::pair<std::vector<site_obj>,double> RandomRewardMap::generate_paths_distance
 
 
 
-void RandomRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list){
+void RandomRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list,std::string input_path_type,double associated_distance_weight){
 
     //First make the data file
     //Want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
@@ -195,7 +195,16 @@ void RandomRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
     if (gnuplot_pipe){
         //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
-        fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Times,16'\n");
+
+        if (input_path_type=="DescendingPriority"){
+            fprintf(gnuplot_pipe, "set title 'Reward Map, Descending Priority Pathing' font 'Times,16'\n");
+        }
+        else if (input_path_type=="Weighted_NN"){
+            fprintf(gnuplot_pipe, "set title 'Reward Map, Distance-Weighted NN Pathing with Weight=%0.3f' font 'Times,16'\n",associated_distance_weight);
+        }
+        else {
+            fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Times,16'\n");
+        }
         fprintf(gnuplot_pipe, "set xrange [%f:%f]\n",min_x_,max_x_);
         fprintf(gnuplot_pipe, "set yrange [%f:%f]\n",min_y_,max_y_);
         fprintf(gnuplot_pipe, "set cblabel 'Reward Function' font 'Times,14' offset 1\n");

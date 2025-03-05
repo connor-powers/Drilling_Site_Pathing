@@ -68,7 +68,10 @@ class RandomRewardMap
 
         void draw_map();
 
-        void draw_map_with_paths(const std::vector<site_obj>);
+
+        void draw_map_with_paths(const std::vector<site_obj>, std::string input_path_type="", double associated_distance_weight=0);
+        //Current options for input_path_type: "DescendingPriority" if the path being plotted was generated with the descending priority method, or 
+        //"Weighted_NN" if the path being plotted was generated with the distance-weighted nearest-neighbor method. If this is the case, pass the associated distance weight as the third argument.
 
         std::pair<std::vector<site_obj>,double> generate_paths_distance_weighted_NN(const double distance_weight);
 

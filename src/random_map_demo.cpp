@@ -19,16 +19,20 @@ int main(){
         min_y,max_y,
         reward_range_min,reward_range_max);
 
-    example_map.draw_map();
+    //uncomment this to see map drawn before any kind of pathing takes place
+    // example_map.draw_map();
 
     //Identify potentially interesting sites
-    int num_sites=5;
-    double site_reward_val_threshold=0.65;
-    example_map.identify_potential_sites(num_sites, site_reward_val_threshold);
-    //Since list_of_sites_ is already sorted in decreasing order of reward val, 
-    //can directly pass it here to get descending priority method path
-    std::vector<site_obj> list_of_identified_sites=example_map.get_list_of_sites();
-    example_map.draw_map_with_paths(list_of_identified_sites); 
+    double site_reward_val_threshold;
+
+    //uncomment this block to see example of limiting the number of identified sites
+    // int num_sites=5;
+    // site_reward_val_threshold=0.65;
+    // example_map.identify_potential_sites(num_sites, site_reward_val_threshold);
+    // //Since list_of_sites_ is already sorted in decreasing order of reward val, 
+    // //can directly pass it here to get descending priority method path
+    // std::vector<site_obj> list_of_identified_sites=example_map.get_list_of_sites();
+    // example_map.draw_map_with_paths(list_of_identified_sites,"DescendingPriority"); 
 
 
     site_reward_val_threshold=2.7;
@@ -36,7 +40,7 @@ int main(){
     example_map.identify_potential_sites(site_reward_val_threshold);
 
     std::vector<site_obj> new_list_of_identified_sites=example_map.get_list_of_sites();
-    example_map.draw_map_with_paths(new_list_of_identified_sites); 
+    example_map.draw_map_with_paths(new_list_of_identified_sites,"DescendingPriority"); 
     double descending_priority_distance=calculate_total_distance_from_sequence(example_map.starting_position_,new_list_of_identified_sites);
     std::cout << "Total distance of descending priority method: " << descending_priority_distance<< "\n";
 
@@ -47,7 +51,7 @@ int main(){
     std::pair<std::vector<site_obj>,double>  NN_paths_and_distance_1=example_map.generate_paths_distance_weighted_NN(distance_weight_1);
     std::vector<site_obj> NN_paths_1=NN_paths_and_distance_1.first;
     double NN_distance_1=NN_paths_and_distance_1.second;
-    example_map.draw_map_with_paths(NN_paths_1);
+    example_map.draw_map_with_paths(NN_paths_1,"Weighted_NN",distance_weight_1);
     std::cout << "Total distance of NN method with distance weight = " << distance_weight_1 << ": " << NN_distance_1 << "\n";
     
 
@@ -55,7 +59,7 @@ int main(){
     std::pair<std::vector<site_obj>,double>  NN_paths_and_distance_2=example_map.generate_paths_distance_weighted_NN(distance_weight_2);
     std::vector<site_obj> NN_paths_2=NN_paths_and_distance_2.first;
     double NN_distance_2=NN_paths_and_distance_2.second;
-    example_map.draw_map_with_paths(NN_paths_2);
+    example_map.draw_map_with_paths(NN_paths_2,"Weighted_NN",distance_weight_2);
     std::cout << "Total distance of NN method with distance weight = " << distance_weight_2 << ": " << NN_distance_2 << "\n";
 
     //Let's try sweeping this distance_weight and see if there's a noticeable minimum of the total distance

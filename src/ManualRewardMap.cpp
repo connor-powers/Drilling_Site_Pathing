@@ -3,6 +3,67 @@
 #include "ManualRewardMap.h"
 #include "utils.h"
 
+
+
+void ManualRewardMap::add_site(site_obj input_site){
+    double site_x=input_site.coordinates.first;
+    double site_y=input_site.coordinates.second;
+    if (site_x<min_site_x_coord_){
+        min_site_x_coord_=site_x;
+    }
+
+    if (site_x>max_site_x_coord_){
+        max_site_x_coord_=site_x;
+    }
+
+    if (site_y<min_site_y_coord_){
+        min_site_y_coord_=site_y;
+    }
+
+    if (site_y>max_site_y_coord_){
+        max_site_y_coord_=site_y;
+    }
+    if (input_site.reward_val>max_reward_val_){
+        max_reward_val_=input_site.reward_val;
+    }
+
+    list_of_sites_.push_back(input_site);
+}
+
+void ManualRewardMap::add_site(double x_coord, double y_coord, double reward_val){
+    //overloading to allow direct addition of a site through its coordinates and reward val
+
+    if (x_coord<min_site_x_coord_){
+        min_site_x_coord_=x_coord;
+    }
+
+    if (x_coord>max_site_x_coord_){
+        max_site_x_coord_=x_coord;
+    }
+
+    if (y_coord<min_site_y_coord_){
+        min_site_y_coord_=y_coord;
+    }
+
+    if (y_coord>max_site_y_coord_){
+        max_site_y_coord_=y_coord;
+    }
+    if (reward_val>max_reward_val_){
+        max_reward_val_=reward_val;
+    }
+    site_obj tmp_site;
+    std::pair<double,double> tmp_coord_pair;
+    tmp_coord_pair.first=x_coord;
+    tmp_coord_pair.second=y_coord;
+
+    tmp_site.coordinates = tmp_coord_pair;
+    tmp_site.reward_val=reward_val;
+    list_of_sites_.push_back(tmp_site);
+}
+
+
+
+
 void ManualRewardMap::generate_map(){
     map_.resize(map_side_length_y_,map_side_length_x_);
     map_.setZero(); //Fill background with zeros
@@ -143,7 +204,7 @@ void ManualRewardMap::draw_map(){
 
 
 
-void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list){
+void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sorted_site_list, std::string input_path_type, double associated_distance_weight){
 
     //First make the data file
     //Want to scale the x and y axes to be in coordinate form instead of indices of a matrix 
@@ -172,7 +233,16 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site_obj> input_sort
     if (gnuplot_pipe){
         //Formatting
         fprintf(gnuplot_pipe, "set view map\n");
-        fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Arial,16'\n");
+
+        if (input_path_type=="DescendingPriority"){
+            fprintf(gnuplot_pipe, "set title 'Reward Map, Descending Priority Pathing' font 'Arial,16'\n");
+        }
+        else if (input_path_type=="Weighted_NN"){
+            fprintf(gnuplot_pipe, "set title 'Reward Map, Distance-Weighted NN Pathing with Weight=%0.3f' font 'Arial,16'\n",associated_distance_weight);
+        }
+        else {
+            fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Arial,16'\n");
+        }        
         fprintf(gnuplot_pipe, "set xrange [%f:%f]\n",min_x_,max_x_);
         fprintf(gnuplot_pipe, "set yrange [%f:%f]\n",min_y_,max_y_);
         fprintf(gnuplot_pipe, "set cblabel 'Reward Function' font 'Arial,14' offset 1\n");
