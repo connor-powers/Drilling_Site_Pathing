@@ -143,8 +143,8 @@ std::pair<std::vector<site>,double> RandomRewardMap::generate_paths_distance_wei
         size_t best_site_index={list_of_sites_.size()}; //should throw out of range error if this never gets changed
         //Find the site with the lowest total "cost" associated with visiting it from the current position, taking into account distance and reward function
         for (size_t site_ind=0;site_ind<unvisited_sites.size();site_ind++){
-            site site=unvisited_sites.at(site_ind);
-            double calculated_cost=calc_cost_function_from_position_to_site(current_coords,site,distance_weight);
+            site site_obj=unvisited_sites.at(site_ind);
+            double calculated_cost=calc_cost_function_from_position_to_site(current_coords,site_obj,distance_weight);
             if (calculated_cost<lowest_cost){
                 lowest_cost=calculated_cost;
                 best_site_index=site_ind;
