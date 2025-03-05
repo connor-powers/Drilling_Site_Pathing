@@ -10,7 +10,7 @@ double distance(std::pair<double,double> input_coords_1, std::pair<double,double
     return std::sqrt(std::pow(input_coords_2.first-input_coords_1.first,2) + std::pow(input_coords_2.second-input_coords_1.second,2));
 }
 
-double calc_cost_function_from_position_to_site(std::pair<double,double> current_position,site_obj target_site, double input_distance_weight){
+double calc_cost_function_from_position_to_site(std::pair<double,double> current_position,site target_site, double input_distance_weight){
 
     double calculated_distance=distance(current_position,target_site.coordinates);
     double total_cost=weighted_cost_function(target_site.reward_val,calculated_distance,input_distance_weight);
@@ -19,7 +19,7 @@ double calc_cost_function_from_position_to_site(std::pair<double,double> current
 
 }
 
-double calculate_total_distance_from_sequence(std::pair<double,double> input_starting_position, std::vector<site_obj> input_site_sequence){
+double calculate_total_distance_from_sequence(std::pair<double,double> input_starting_position, std::vector<site> input_site_sequence){
     if (input_site_sequence.size()==0){
         return 0;
     }
