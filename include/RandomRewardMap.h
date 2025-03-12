@@ -47,12 +47,14 @@ class RandomRewardMap
             std::uniform_real_distribution<> reward_val_distribution(reward_range_min_,reward_range_max_);
 
 
-            map_=MatrixXd::Random(map_side_length_y_,map_side_length_x_);
-            //rescale to desired range since by default Random generates floats between -1 and 1
-            map_*=((reward_range_max_-reward_range_min_)/2); //because initially has a range of 2 from going between -1 and 1
+            // map_=MatrixXd::Random(map_side_length_y_,map_side_length_x_);
+            map_=MatrixXd::NullaryExpr(map_side_length_y_,map_side_length_x_,[&engine,&reward_val_distribution](){return reward_val_distribution(engine);});
 
-            MatrixXd tmp_mat=MatrixXd::Constant(map_side_length_y_,map_side_length_x_,reward_range_min_+((reward_range_max_-reward_range_min_)/2));
-            map_+=tmp_mat;
+            //rescale to desired range since by default Random generates floats between -1 and 1
+            // map_*=((reward_range_max_-reward_range_min_)/2); //because initially has a range of 2 from going between -1 and 1
+
+            // MatrixXd tmp_mat=MatrixXd::Constant(map_side_length_y_,map_side_length_x_,reward_range_min_+((reward_range_max_-reward_range_min_)/2));
+            // map_+=tmp_mat;
 
 
         }
