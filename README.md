@@ -18,9 +18,7 @@ Once a map is generated, you can generate a path (a sequence of sites to visit s
 
 
 # Build Instructions
-  1. Create an empty "build" directory and navigate to it
-  2. Run "cmake .."
-  3. Run "cmake --build ."
+1. From the project root directory: `./build.sh`
 
 # Usage Instructions
 After building, there should be executables called "run_manual_map_demo" and "run_random_map_demo" in the "build" directory.
