@@ -4,26 +4,32 @@
 #include <iostream>
 #include <vector>
 
-struct site
-{
-    std::pair<double,double> coordinates;
-    double reward_val;
+struct site {
+  std::pair<double, double> coordinates;
+  double reward_val;
 
-    bool operator < (const site input_site) const {
-        return (reward_val<input_site.reward_val);
-    }
-    bool operator == (const site input_site) const {
-        return ((coordinates.first==input_site.coordinates.first)&&(coordinates.second==input_site.coordinates.second));
-    }
+  bool operator<(const site input_site) const {
+    return (reward_val < input_site.reward_val);
+  }
+  bool operator==(const site input_site) const {
+    return ((coordinates.first == input_site.coordinates.first) &&
+            (coordinates.second == input_site.coordinates.second));
+  }
 };
 
+double weighted_cost_function(double input_site_reward_function,
+                              double input_distance_to_site,
+                              double input_distance_weight);
 
-double weighted_cost_function(double input_site_reward_function, double input_distance_to_site, double input_distance_weight);
+double distance(std::pair<double, double> input_coords_1,
+                std::pair<double, double> input_coords_2);
 
-double distance(std::pair<double,double> input_coords_1, std::pair<double,double> input_coords_2);
+double calc_cost_function_from_position_to_site(
+    std::pair<double, double> current_position, site target_site,
+    double input_distance_weight);
 
-double calc_cost_function_from_position_to_site(std::pair<double,double> current_position,site target_site, double input_distance_weight);
-
-double calculate_total_distance_from_sequence(std::pair<double,double> input_starting_position, std::vector<site> input_site_sequence);
+double calculate_total_distance_from_sequence(
+    std::pair<double, double> input_starting_position,
+    std::vector<site> input_site_sequence);
 
 #endif
