@@ -55,8 +55,9 @@ class ManualRewardMap
         void draw_map();
 
         void draw_map_with_paths(const std::vector<site>, std::string input_path_type="", double associated_distance_weight=0);
-        //Current options for input_path_type: "DescendingPriority" if the path being plotted was generated with the descending priority method, or 
-        //"Weighted_NN" if the path being plotted was generated with the distance-weighted nearest-neighbor method. If this is the case, pass the associated distance weight as the third argument.
+        // Current options for input_path_type: "DescendingPriority" if the path being plotted was generated with the descending priority method, or 
+        // "Weighted_NN" if the path being plotted was generated with the distance-weighted nearest-neighbor method. 
+        // If this is the case, pass the associated distance weight as the third argument.
 
         std::pair<std::vector<site>,double>  generate_paths_descending_priority();
 

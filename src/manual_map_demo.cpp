@@ -99,7 +99,8 @@ int main(){
     // manual_reward_map.draw_map(); //uncomment to draw map without paths
 
 
-    std::pair<std::vector<site>,double>  paths_and_distance_descending_priority=manual_reward_map.generate_paths_descending_priority();
+    std::pair<std::vector<site>,double>  paths_and_distance_descending_priority = 
+        manual_reward_map.generate_paths_descending_priority();
     std::vector<site> paths_descending_priority=paths_and_distance_descending_priority.first;
     double distance_descending_priority=paths_and_distance_descending_priority.second;
     manual_reward_map.draw_map_with_paths(paths_descending_priority,"DescendingPriority");
@@ -108,19 +109,23 @@ int main(){
 
 
     double distance_weight_med=1;
-    std::pair<std::vector<site>,double>  paths_and_distance_NN_midweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_med);
+    std::pair<std::vector<site>,double>  paths_and_distance_NN_midweight = 
+        manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_med);
     std::vector<site> paths_NN_midweight=paths_and_distance_NN_midweight.first;
     double distance_NN_midweight=paths_and_distance_NN_midweight.second;
     manual_reward_map.draw_map_with_paths(paths_NN_midweight,"Weighted_NN",distance_weight_med);
-    std::cout << "Total distance of NN method with distance weight = " << distance_weight_med << ": " << distance_NN_midweight << "\n";
+    std::cout << "Total distance of NN method with distance weight = " << distance_weight_med 
+        << ": " << distance_NN_midweight << "\n";
 
 
     double distance_weight_high=100;
-    std::pair<std::vector<site>,double>  paths_and_distance_NN_highweight=manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_high);
+    std::pair<std::vector<site>,double>  paths_and_distance_NN_highweight = 
+        manual_reward_map.generate_paths_distance_weighted_NN(distance_weight_high);
     std::vector<site> paths_NN_highweight=paths_and_distance_NN_highweight.first;
     double distance_NN_highweight=paths_and_distance_NN_highweight.second;
     manual_reward_map.draw_map_with_paths(paths_NN_highweight,"Weighted_NN",distance_weight_high);
-    std::cout << "Total distance of NN method with distance weight = " << distance_weight_high << ": " << distance_NN_highweight << "\n";
+    std::cout << "Total distance of NN method with distance weight = " << distance_weight_high 
+        << ": " << distance_NN_highweight << "\n";
 
 
     //Let's try sweeping this distance_weight and see if there's a noticeable minimum of the total distance

@@ -173,7 +173,8 @@ void ManualRewardMap::draw_map(){
     if (output_file.is_open()){
         for (size_t row_index=0;row_index<row_count;row_index++){
             for (size_t col_index=0;col_index<col_count;col_index++){
-                output_file << min_x_+(col_index*discrete_movement_x) <<" "<< min_y_+(row_index*discrete_movement_y) <<" "<< map_(row_index,col_index) << "\n";
+                output_file << min_x_+(col_index*discrete_movement_x) << " " << 
+                min_y_ + (row_index * discrete_movement_y) << " " << map_(row_index,col_index) << "\n";
             }
         }
         
@@ -218,7 +219,8 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site> input_sorted_s
     if (output_file.is_open()){
         for (size_t row_index=0;row_index<row_count;row_index++){
             for (size_t col_index=0;col_index<col_count;col_index++){
-                output_file << min_x_+col_index*discrete_movement_x <<" "<< min_y_+row_index*discrete_movement_y <<" "<< map_(row_index,col_index) << "\n";
+                output_file << min_x_+col_index*discrete_movement_x << " " 
+                << min_y_ + row_index * discrete_movement_y <<" "<< map_(row_index,col_index) << "\n";
             }
         }
         
@@ -238,7 +240,8 @@ void ManualRewardMap::draw_map_with_paths(const std::vector<site> input_sorted_s
             fprintf(gnuplot_pipe, "set title 'Reward Map, Descending Priority Pathing' font 'Arial,16'\n");
         }
         else if (input_path_type=="Weighted_NN"){
-            fprintf(gnuplot_pipe, "set title 'Reward Map, Distance-Weighted NN Pathing with Weight=%0.3f' font 'Arial,16'\n",associated_distance_weight);
+            fprintf(gnuplot_pipe, "set title 'Reward Map, Distance-Weighted NN Pathing with Weight=%0.3f' font 'Arial,16'\n"
+                    , associated_distance_weight);
         }
         else {
             fprintf(gnuplot_pipe, "set title 'Reward Map' font 'Arial,16'\n");
@@ -289,7 +292,8 @@ std::pair<std::vector<site>,double> ManualRewardMap::generate_paths_descending_p
 }
 
 std::pair<std::vector<site>,double> ManualRewardMap::generate_paths_distance_weighted_NN(const double distance_weight){
-    //Nearest-neighbor algorithm taking into account both distance and site reward vals in the spirit of, e.g., https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm
+    //Nearest-neighbor algorithm taking into account both distance and site reward vals in the spirit of, 
+    // e.g., https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm
 
     std::vector<site> visited_sites={};
     std::vector<site> unvisited_sites=list_of_sites_;
@@ -299,7 +303,8 @@ std::pair<std::vector<site>,double> ManualRewardMap::generate_paths_distance_wei
     while (unvisited_sites.size()>0){
         double lowest_cost=INFINITY;
         size_t best_site_index={list_of_sites_.size()}; //should throw out of range error if this never gets changed
-        //Find the site with the lowest total "cost" associated with visiting it from the current position, taking into account distance and reward function
+        //Find the site with the lowest total "cost" associated with visiting it from the current position, 
+        // taking into account distance and reward function
         for (size_t site_ind=0;site_ind<unvisited_sites.size();site_ind++){
             site site_obj=unvisited_sites.at(site_ind);
             double calculated_cost=calc_cost_function_from_position_to_site(current_coords,site_obj,distance_weight);
